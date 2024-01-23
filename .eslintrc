@@ -1,11 +1,19 @@
 {
   "parser": "@typescript-eslint/parser",
-  "extends": ["plugin:prettier/recommended", "prettier", "eslint:recommended"],
-  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "jest"
+  ],
   "parserOptions": {
     "ecmaVersion": 2022,
     "sourceType": "module",
-    "project": "tsconfig.json",
+    "project": "tsconfig.json"
   },
   "env": {
     "es6": true,
@@ -13,18 +21,15 @@
   },
   "overrides": [
     {
-      "files": ["tests/**/*"],
+      "files": [
+        "tests/**/*"
+      ],
       "env": {
         "jest": true
       }
     }
   ],
   "rules": {
-    "no-var": "error",
-    "semi": "error",
-    "no-multi-spaces": "error",
-    "space-in-parens": "error",
-    "no-multiple-empty-lines": "error",
-    "prefer-const": "error",
+    "@typescript-eslint/no-unused-vars": "warn"
   }
 }
