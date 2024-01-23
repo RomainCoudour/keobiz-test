@@ -1,6 +1,11 @@
 import { DataSource, Repository } from 'typeorm';
 import BalanceSheetEntity from '../entities/balance-sheet';
-import { BalanceSheet, Client, IBalanceSheetRepository } from 'src/application';
+import {
+  BalanceSheet,
+  BalanceSheetCreateDTO,
+  Client,
+  IBalanceSheetRepository,
+} from 'src/application';
 
 export default class BalanceSheetRepository implements IBalanceSheetRepository {
   #repository: Repository<BalanceSheetEntity>;
@@ -9,22 +14,30 @@ export default class BalanceSheetRepository implements IBalanceSheetRepository {
     this.#repository = dataSource.getRepository(BalanceSheetEntity);
   }
 
-  async save(balanceSheet: BalanceSheet): Promise<void> {
-    this.#repository.save(balanceSheet);
+  async save(
+    client: Client,
+    payload: BalanceSheetCreateDTO
+  ): Promise<BalanceSheet> {
+    const balanceSheet = await this.#repository.save({
+      client,
+      year: payload.year,
+      result: payload.result,
+    });
+    return BalanceSheetEntity.mapToModel(balanceSheet, client);
   }
 
   async update(
     balanceSheet: BalanceSheet,
     updatePayload: Partial<BalanceSheet>
   ): Promise<void> {
-    this.#repository.update(
+    await this.#repository.update(
       { year: balanceSheet.year, client: balanceSheet.client },
       updatePayload
     );
   }
 
   async delete(balanceSheet: BalanceSheet): Promise<void> {
-    this.#repository.delete({
+    await this.#repository.delete({
       year: balanceSheet.year,
       client: balanceSheet.client,
     });
@@ -35,5 +48,15 @@ export default class BalanceSheetRepository implements IBalanceSheetRepository {
     return balanceSheets.map((balanceSheet) =>
       BalanceSheetEntity.mapToModel(balanceSheet, client)
     );
+  }
+
+  async findByYearAndClient(
+    year: number,
+    client: Client
+  ): Promise<BalanceSheet | null> {
+    const balanceSheet = await this.#repository.findOneBy({ client, year });
+
+    if (!balanceSheet) return null;
+    return BalanceSheetEntity.mapToModel(balanceSheet, client);
   }
 }
