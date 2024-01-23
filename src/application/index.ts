@@ -7,5 +7,5 @@ export { default as BalanceSheetCreateDTO } from './types/balance-sheet-create-d
 export { default as BalanceSheet } from './models/balance-sheet';
 export { default as Client } from './models/client';
 
-export { default as BalanceService } from './services/balance';
+export { default as BalanceSheetService } from './services/balance';
 export { default as ClientService } from './services/client';

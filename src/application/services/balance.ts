@@ -3,7 +3,7 @@ import BalanceSheet from '../models/balance-sheet';
 import BalanceSheetCreateDTO from '../types/balance-sheet-create-dto';
 import ClientService from './client';
 
-export default class BalanceService {
+export default class BalanceSheetService {
   #balanceSheetRepository: IBalanceSheetRepository;
   #clientService: ClientService;
 
@@ -25,8 +25,11 @@ export default class BalanceService {
     return this.#balanceSheetRepository.findByYearAndClient(year, client);
   }
 
-  async create(payload: BalanceSheetCreateDTO): Promise<void> {
-    const client = await this.#clientService.findById(payload.clientId);
+  async create(
+    clientId: number,
+    payload: BalanceSheetCreateDTO
+  ): Promise<void> {
+    const client = await this.#clientService.findById(clientId);
 
     if (!client) throw new Error();
     await this.#balanceSheetRepository.save(client, payload);
