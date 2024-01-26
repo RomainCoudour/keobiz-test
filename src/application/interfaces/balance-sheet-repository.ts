@@ -18,4 +18,6 @@ export default interface IBalanceSheetRepository {
     year: number,
     client: Client
   ): Promise<BalanceSheet | null>;
+
+  findDuplicates(): Promise<{ id: number }[]>;
 }

@@ -56,7 +56,9 @@ async function initializeData(dataSource: DataSource) {
         (23,'Sylvie','Mercier'),
         (24,'Sébastien','Garcia'),
         (25,'Pierre','Bernard'),
-        (26,'Anne','David');
+        (26,'Anne','David'),
+        (27,'Eric','Dupond'),
+        (28,'Eric','Dupond');
 `);
   await dataSource.query(`
     INSERT INTO balance_sheets (year, client_id, result)
@@ -155,7 +157,13 @@ async function initializeData(dataSource: DataSource) {
         (2023,22,3160.66),
         (2023,23,2710.02),
         (2023,24,-1475.19),
-        (2023,25,2952.21);
+        (2023,25,2952.21),
+        (2020,27,1234),
+        (2021,27,556),
+        (2022,27,3567),
+        (2023,27,245),
+        (2020,28,1234),
+        (2021,28,556);
 `);
 }
 
@@ -177,7 +185,10 @@ export default async function setup() {
   });
   await testDataSource.initialize();
   await initializeDatabase(testDataSource);
-  await initializeData(testDataSource);
 
   globalThis.testDataSource = testDataSource;
+}
+
+export async function setupData(testDataSource: DataSource) {
+  await initializeData(testDataSource);
 }

@@ -8,6 +8,7 @@ describe('Unit > BalanceSheetService', () => {
       delete: jest.fn(),
       findAllBalanceSheetsByClient: jest.fn(),
       findByYearAndClient: jest.fn(),
+      findDuplicates: jest.fn(),
     },
     clientService: {
       clientRepository: {

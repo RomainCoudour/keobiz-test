@@ -61,4 +61,8 @@ export default class BalanceSheetService {
     if (!client) throw new Error();
     return this.balanceSheetRepository.findAllBalanceSheetsByClient(client);
   }
+
+  async findDuplicates(): Promise<{ id: number }[]> {
+    return this.balanceSheetRepository.findDuplicates();
+  }
 }

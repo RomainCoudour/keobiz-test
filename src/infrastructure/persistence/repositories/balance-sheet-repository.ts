@@ -70,4 +70,24 @@ export default class BalanceSheetRepository implements IBalanceSheetRepository {
     if (!balanceSheet) return null;
     return BalanceSheetEntity.mapToModel(balanceSheet, client);
   }
+
+  async findDuplicates(): Promise<{ id: number }[]> {
+    return await this.#repository.query(`
+      SELECT bs.client_id AS id
+      FROM balance_sheets bs
+      INNER JOIN balance_sheets bsJoin
+      ON bs.year = bsJoin.year AND bs.result = bsJoin.result AND bs.client_id <> bsJoin.client_id
+      WHERE bs.client_id IN (
+        SELECT DISTINCT c.id
+        FROM clients c
+        INNER JOIN clients cJoin 
+        ON cJoin.first_name = c.first_name 
+          AND cJoin.last_name = c.last_name 
+          AND c.id <> cJoin.id
+      )
+      GROUP BY bs.client_id, bsJoin.client_id
+      HAVING COUNT(bs.client_id) > 1
+      ORDER BY bs.client_id
+    `);
+  }
 }

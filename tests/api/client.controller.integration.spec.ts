@@ -1,12 +1,13 @@
 import request from 'supertest';
 import app from '../../src/app';
 import { BalanceSheet } from '../../src/application';
-import setup from '../__setup__/setup';
+import setup, { setupData } from '../__setup__/setup';
 import teardown from '../__setup__/teardown';
 
 describe('Integration > ClientController', () => {
   beforeAll(async () => {
     await setup();
+    await setupData(globalThis.testDataSource);
   });
 
   afterAll(async () => {
