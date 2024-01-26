@@ -1,13 +1,9 @@
-import dotenv from 'dotenv';
 import express from 'express';
-import 'reflect-metadata';
 import dataSource from './infrastructure/persistence/data-source';
 import ClientRepository from './infrastructure/persistence/repositories/client-repository';
 import BalanceSheetRepository from './infrastructure/persistence/repositories/balance-sheet-repository';
 import { BalanceSheetService, ClientService } from './application';
 import ClientController from './api/client.controller';
-
-dotenv.config();
 
 // Initialize datasource
 dataSource
@@ -15,7 +11,10 @@ dataSource
   .then(() => {
     console.log('Connection to datasource established.');
   })
-  .catch((error) => console.log(error));
+  .catch(async (error) => {
+    console.log(error);
+    await dataSource.destroy();
+  });
 
 // Initialize app components
 const clientRepository = new ClientRepository(dataSource);
@@ -33,7 +32,7 @@ const clientController = new ClientController(
 );
 
 const app = express();
-app.set('port', process.env.PORT ?? 3000);
+app.set('port', process.env.APP_PORT ?? 1234);
 app.use(express.json());
 
 app.post('/clients', clientController.save);

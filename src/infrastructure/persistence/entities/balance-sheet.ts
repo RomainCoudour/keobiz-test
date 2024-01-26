@@ -2,23 +2,25 @@ import {
   Column,
   Entity,
   Index,
+  JoinColumn,
   ManyToOne,
   PrimaryColumn,
   Relation,
 } from 'typeorm';
 import ClientEntity from './client';
-import { BalanceSheet, Client } from 'src/application';
+import { BalanceSheet, Client } from '../../../application';
 
-@Entity({ name: 'clients' })
+@Entity({ name: 'balance_sheets' })
 @Index(['client', 'year'])
 export default class BalanceSheetEntity {
   @PrimaryColumn({ type: 'integer' })
   year!: number;
 
-  @PrimaryColumn({ type: 'integer' })
-  @ManyToOne(() => ClientEntity, (client) => client.balances, {
+  @PrimaryColumn({ type: 'integer', name: 'client_id' })
+  @ManyToOne(() => ClientEntity, (client) => client.id, {
     nullable: false,
   })
+  @JoinColumn({ name: 'client_id' })
   client!: Relation<ClientEntity>;
 
   @Column({ type: 'decimal', nullable: false })
@@ -31,7 +33,7 @@ export default class BalanceSheetEntity {
     return new BalanceSheet({
       year: balanceSheet.year,
       client,
-      result: balanceSheet.result,
+      result: Number(balanceSheet.result),
     });
   }
 }

@@ -1,6 +1,10 @@
 import { DataSource, Repository } from 'typeorm';
+import {
+  Client,
+  ClientCreateDTO,
+  IClientRepository,
+} from '../../../application';
 import ClientEntity from '../entities/client';
-import { Client, ClientCreateDTO, IClientRepository } from 'src/application';
 
 export default class ClientRepository implements IClientRepository {
   #repository: Repository<ClientEntity>;
@@ -10,14 +14,16 @@ export default class ClientRepository implements IClientRepository {
   }
 
   async findById(id: number): Promise<Client | null> {
-    return this.#repository.findOneBy({ id });
+    const client = await this.#repository.findOneBy({ id });
+    return client ? ClientEntity.mapToModel(client) : null;
   }
 
   async findByFirstAndLastNames(
     firstName: string,
     lastName: string
   ): Promise<Client | null> {
-    return this.#repository.findOneBy({ firstName, lastName });
+    const client = await this.#repository.findOneBy({ firstName, lastName });
+    return client ? ClientEntity.mapToModel(client) : null;
   }
 
   async save(payload: ClientCreateDTO): Promise<Client> {

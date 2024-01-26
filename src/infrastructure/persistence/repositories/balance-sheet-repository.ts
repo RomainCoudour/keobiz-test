@@ -5,7 +5,7 @@ import {
   BalanceSheetCreateDTO,
   Client,
   IBalanceSheetRepository,
-} from 'src/application';
+} from '../../../application';
 
 export default class BalanceSheetRepository implements IBalanceSheetRepository {
   #repository: Repository<BalanceSheetEntity>;
@@ -44,7 +44,12 @@ export default class BalanceSheetRepository implements IBalanceSheetRepository {
   }
 
   async findAllBalanceSheetsByClient(client: Client): Promise<BalanceSheet[]> {
-    const balanceSheets = await this.#repository.findBy({ client });
+    const balanceSheets = await this.#repository
+      .createQueryBuilder('balance_sheets')
+      .select('balance')
+      .from(BalanceSheetEntity, 'balance')
+      .where('balance.client_id = :id', { id: client.id })
+      .getMany();
     return balanceSheets.map((balanceSheet) =>
       BalanceSheetEntity.mapToModel(balanceSheet, client)
     );
@@ -54,7 +59,13 @@ export default class BalanceSheetRepository implements IBalanceSheetRepository {
     year: number,
     client: Client
   ): Promise<BalanceSheet | null> {
-    const balanceSheet = await this.#repository.findOneBy({ client, year });
+    const balanceSheet = await this.#repository
+      .createQueryBuilder('balance_sheets')
+      .select('balance')
+      .from(BalanceSheetEntity, 'balance')
+      .where('balance.client_id = :clientId', { clientId: client.id })
+      .andWhere('balance.year = :year', { year })
+      .getOne();
 
     if (!balanceSheet) return null;
     return BalanceSheetEntity.mapToModel(balanceSheet, client);

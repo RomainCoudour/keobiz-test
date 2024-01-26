@@ -4,7 +4,7 @@ import {
   BalanceSheetCreateDTO,
   ClientCreateDTO,
   ClientService,
-} from 'src/application';
+} from '../application';
 
 export default class ClientController {
   #clientService: ClientService;

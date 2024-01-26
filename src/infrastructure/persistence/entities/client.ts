@@ -7,18 +7,18 @@ import {
   Relation,
 } from 'typeorm';
 import BalanceSheetEntity from './balance-sheet';
-import { Client } from 'src/application';
+import { Client } from '../../../application';
 
-@Entity({ name: 'balance_sheets' })
+@Entity({ name: 'clients' })
 @Index(['firstName', 'lastName'])
 export default class ClientEntity {
   @PrimaryGeneratedColumn({ type: 'integer' })
   id: number;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false, name: 'first_name' })
   firstName!: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false, name: 'last_name' })
   lastName!: string;
 
   @OneToMany(() => BalanceSheetEntity, (balance) => balance.client, {
