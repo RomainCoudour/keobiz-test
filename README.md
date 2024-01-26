@@ -3,7 +3,7 @@
 Pas super content de mon test alors qu'il n'y avait rien de dur.
 Je me suis un peu compliqué la vie et j'ai perdu du temps : (tryout de TypeORM par exemple).
 
-Le script se trouve `src/infrastructure/persistence/repositories/balance-sheet-repository.ts`, testé dans `tests/application/balance-sheet.service.integration.spec.ts`
+Le script se trouve [HERE](https://github.com/RomainCoudour/keobiz-test/tree/main/src/infrastructure/persistence/repositories/balance-sheet-repository.ts), testé dans [THERE](https://github.com/RomainCoudour/keobiz-test/tree/main/tests/application/balance-sheet.service.integration.spec.ts)
 
 ### Run tests
 
