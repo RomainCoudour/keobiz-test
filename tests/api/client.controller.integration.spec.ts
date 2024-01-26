@@ -34,7 +34,6 @@ describe('Integration > ClientController', () => {
 
     expect(response.status).toEqual(200);
     expect(response.body.length > 0).toBe(true);
-    console.log('helloworld', response.body);
     expect(
       response.body.every((balance: BalanceSheet) => balance.client.id === 1)
     ).toBe(true);
