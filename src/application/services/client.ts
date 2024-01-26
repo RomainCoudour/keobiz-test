@@ -3,25 +3,25 @@ import Client from '../models/client';
 import ClientCreateDTO from '../types/client-create-dto';
 
 export default class ClientService {
-  #clientRepository: IClientRepository;
+  clientRepository: IClientRepository;
 
   constructor(clientRepository: IClientRepository) {
-    this.#clientRepository = clientRepository;
+    this.clientRepository = clientRepository;
   }
 
   async findById(clientId: number): Promise<Client | null> {
-    return this.#clientRepository.findById(clientId);
+    return this.clientRepository.findById(clientId);
   }
 
   async findByFirstAndLastNames(
     firstName: string,
     lastName: string
   ): Promise<Client | null> {
-    return this.#clientRepository.findByFirstAndLastNames(firstName, lastName);
+    return this.clientRepository.findByFirstAndLastNames(firstName, lastName);
   }
 
   async create(payload: ClientCreateDTO): Promise<void> {
-    await this.#clientRepository.save(payload);
+    await this.clientRepository.save(payload);
   }
 
   async update(
@@ -31,13 +31,13 @@ export default class ClientService {
     const client = await this.findById(clientId);
 
     if (!client) throw new Error();
-    await this.#clientRepository.update(client, payload);
+    await this.clientRepository.update(client, payload);
   }
 
   async delete(clientId: number): Promise<void> {
     const client = await this.findById(clientId);
 
     if (!client) throw new Error();
-    await this.#clientRepository.delete(client);
+    await this.clientRepository.delete(client);
   }
 }
